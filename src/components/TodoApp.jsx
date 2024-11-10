@@ -4,18 +4,15 @@ import Todo from "./Todo";
 import EditTodoForm from "./EditTodoForm";
 
 const TodoApp = () => {
-  // Load saved todos from localStorage or set it to an empty array
   const [todos, setTodos] = useState(() => {
     const savedTodos = localStorage.getItem("todos");
     return savedTodos ? JSON.parse(savedTodos) : [];
   });
 
-  // Save todos to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos]);
 
-  // Add new todo
   const addTodo = (todo) => {
     setTodos([
       ...todos,
@@ -23,12 +20,10 @@ const TodoApp = () => {
     ]);
   };
 
-  // Delete todo
   const deleteTodo = (id) => {
     setTodos(todos.filter((todo) => todo.id !== id));
   };
 
-  // Toggle completion of a todo
   const toggleComplete = (id) => {
     setTodos(
       todos.map((todo) =>
@@ -37,7 +32,6 @@ const TodoApp = () => {
     );
   };
 
-  // Edit todo
   const editTodo = (id) => {
     setTodos(
       todos.map((todo) =>
@@ -46,7 +40,6 @@ const TodoApp = () => {
     );
   };
 
-  // Update todo
   const updateTodo = (id, task) => {
     setTodos(
       todos.map((todo) =>
@@ -56,22 +49,26 @@ const TodoApp = () => {
   };
 
   return (
-    <div className="TodoApp">
-      <h1>To-Do List</h1>
-      <TodoForm addTodo={addTodo} />
-      {todos.map((todo) =>
-        todo.isEditing ? (
-          <EditTodoForm key={todo.id} task={todo} updateTodo={updateTodo} />
-        ) : (
-          <Todo
-            key={todo.id}
-            task={todo}
-            deleteTodo={deleteTodo}
-            editTodo={editTodo}
-            toggleComplete={toggleComplete}
-          />
-        )
-      )}
+    <div className="min-h-screen flex justify-center items-center bg-gray-100 p-4">
+      <div className="w-full max-w-md bg-blue-200 p-6 rounded-lg shadow-lg">
+        <h1 className="text-2xl font-semibold text-center mb-6">To-Do List</h1>
+        <TodoForm addTodo={addTodo} />
+        <div className="space-y-4 mt-4">
+          {todos.map((todo) =>
+            todo.isEditing ? (
+              <EditTodoForm key={todo.id} task={todo} updateTodo={updateTodo} />
+            ) : (
+              <Todo
+                key={todo.id}
+                task={todo}
+                deleteTodo={deleteTodo}
+                editTodo={editTodo}
+                toggleComplete={toggleComplete}
+              />
+            )
+          )}
+        </div>
+      </div>
     </div>
   );
 };
